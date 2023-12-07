@@ -13,13 +13,14 @@ public class Zipper{
         for (String line = in.readLine(); line != null; line = in.readLine()) {         // Weird for loop to give line as each line in a file
             for(String s : line.split("")){                                       // Split the line into each individual char
                 if(map.containsKey(s)){
-                    map.put(s, (int)(map.get(s)) + 1);
+                    map.put(s, (int)(map.get(s)) + 1);  // Increase count of character if already in map
                 } else{
-                    map.put(s, 1);
+                    map.put(s, 1);                // Else, just put the character in with a count of 1 to start
                 }
             }
         }
-        System.out.println(map);
+
+        
     }
 
     public static void main(String[] args) {
