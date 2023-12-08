@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
+
+import org.w3c.dom.Node;
 
 public class Zipper{
     public static void zip(File ogLoc, File saveLoc) throws IOException{
@@ -30,6 +33,10 @@ public class Zipper{
         }
 
         HuffmanBaseNode root = pq.poll();
+
+        HashMap<String, Integer> encodingMap = new HashMap<>();
+        Map<Character, String> huffmanCode = new HashMap<>();  
+        encodeData(root, "", huffmanCode); 
     }
 
     public static HashMap<String, Integer> createMap(BufferedReader in) throws IOException{
@@ -48,38 +55,31 @@ public class Zipper{
         return map;
     }
 
-    public static HashMap<String, Integer> getEncodings(HuffmanBaseNode root, HashMap<String, Integer> map){
-        HashMap<String, Integer> endcodings = new HashMap<String, Integer>();
+    public static void encodeData(HuffmanBaseNode root, String str, Map<Character, String> huffmanCode)  
+    {  
+        if (root == null)   
+        {  
+            return;  
+        }  
+        //checks if the node is a leaf node or not  
+        if (root.isLeaf())   
+        {  
+            HuffmanLeafNode tempRoot = (HuffmanLeafNode)root;
+            huffmanCode.put(tempRoot.value(), str.length() > 0 ? str : "1");  
+        }  
+        encodeData(root.left, str + '0', huffmanCode);  
+        encodeData(root.right, str + '1', huffmanCode);  
+    } 
 
-        for(String s : map.keySet()){
-            endcodings.put(s, Integer.parseInt(recursiveEncoding(root, "", s)));
+    private static void recursiveEncoding(HuffmanBaseNode root, HashMap<String, Integer> map, String target){
+        if (root == null){
+            return;
         }
-
-        return endcodings;
-    }
-
-    private static String recursiveEncoding(HuffmanBaseNode root, String encoding, String target){
-        String left; = "";
-        String right = "";
-
-        if(root.isLeaf()){  // Root is a leaf node
-            HuffmanLeafNode tempRoot = (HuffmanLeafNode)(root);
-            if(tempRoot.value() == target){
-                return encoding;
-            } else {
-                return "Not found";
-            }
-        } else {    // Root is a internal node
-            HuffmanInternalNode tempRoot = (HuffmanInternalNode)(root);
-            if(tempRoot.left() != null){
-                left = recursiveEncoding(tempRoot, encoding + "0", target);
-            }
-            if(tempRoot.right() != null){
-                right = recursiveEncoding(tempRoot, encoding + "1", target);
-            }
+        
+        if(root.isLeaf()){
+            HuffmanLeafNode tempRoot = (HuffmanLeafNode)root;
+            map.put(tempRoot.value(), target.length() > 0 ? Integer.parseInt(target) : 1);
         }
-        if(right.contains("Not found")){return encoding}
-
     }
 
     public static void main(String[] args) {
