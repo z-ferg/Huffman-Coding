@@ -1,13 +1,13 @@
 public class HuffmanLeafNode implements HuffmanBaseNode, Comparable{
-    private String element;
+    private char element;
     private int weight;
 
-    public HuffmanLeafNode(String el, int wt){
+    public HuffmanLeafNode(char el, int wt){
         element = el;
         weight = wt;
     }
 
-    public String value(){
+    public char value(){
         return element;
     }
 
