@@ -37,24 +37,7 @@ public class Zipper{
         
         encodeData(root, "");   
         
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(saveLoc));
-        DataOutputStream dos = new DataOutputStream(bos);
-        StringBuilder encStr = new StringBuilder();
-
-        in = new BufferedReader(new FileReader(ogLoc));
-        int ch;
-        while((ch = in.read()) != -1){
-            encStr.append(codes.get((char)ch));
-        }
-
-        int padding = 8 - (encStr.length() % 8);
-        for(int i = 0; i < padding; i++){
-            encStr.append('0');
-        }
-
-        for(int i = 0; i < encStr.length(); i += 8){
-            dos.writeByte(Integer.parseInt(encStr.substring(i, i + 8), 2));
-        }
+        System.out.println(codes);
     }
 
     public static HashMap<Character, Integer> createMap(BufferedReader in) throws IOException{
